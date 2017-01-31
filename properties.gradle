@@ -1,0 +1,17 @@
+
+ext.prop1 = 'prop1'
+
+task hasprops {
+    ext.myProp = 'This is executed during the configuration phase.'
+    doLast {
+        ext.myProp2 = 'myProp Set during execution'
+    }
+}
+
+println "Task props: " + hasprops.myProp
+
+
+task printprops(dependsOn: [hasprops]) << {
+    println hasprops.myProp2
+    println hasprops.myProp
+}

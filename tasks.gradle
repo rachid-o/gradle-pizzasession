@@ -1,0 +1,31 @@
+task createBuildDir {
+  outputs.upToDateWhen { buildDir.exists() }
+  doLast {
+    buildDir.mkdirs()
+  }
+}
+
+task determineToday {
+  doLast {
+    ext.result = new Date().format('dd-MM')
+  }
+}
+
+task createTodayFile(dependsOn: [determineToday, createBuildDir]) {
+  def todayFile = file("$buildDir/today.txt")
+  outputs.file todayFile
+  //outputs.upToDateWhen { false }
+  doLast {
+    todayFile.text = 'date of today is ' + determineToday.result
+  }
+}
+
+task dist(type: Zip, dependsOn: [createTodayFile]) {
+  from buildDir 
+  include '*.txt'
+  archiveName "$buildDir/dists/today.zip"
+}
+
+task clean << {
+  delete buildDir 
+}

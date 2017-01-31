@@ -1,0 +1,8 @@
+task doSometing {
+    println 'This is executed during the configuration phase.'
+    doLast {
+    	println 'This is executed during the execution phase.'
+    }
+}
+
+defaultTasks 'doSometing'
